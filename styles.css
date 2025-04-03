@@ -177,15 +177,76 @@ button:hover {
 }
 
 
-/* Media query pour écrans <= 460px */
+/* 📌 Responsive Design - Écrans <= 768px (Tablettes & Mobiles) */
+@media screen and (max-width: 768px) {
+    #quiz-container, #result-container {
+        width: 90%;
+        max-width: 90%;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    #quiz-container h1 {
+        font-size: 1.5rem;
+    }
+
+    #options-container {
+        grid-template-columns: 1fr; /* Une seule colonne pour plus de clarté */
+    }
+
+    label {
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    button {
+        width: 100%; /* Pour que le bouton prenne toute la largeur */
+        font-size: 1rem;
+    }
+}
+
+/* 📌 Responsive Design - Écrans <= 460px (Petits smartphones) */
 @media screen and (max-width: 460px) {
+    #quiz-container, #result-container {
+        width: 95%;
+        padding: 15px;
+        margin: 0 auto;
+    }
+
+    #quiz-container h1 {
+        font-size: 1.3rem;
+    }
+
+    #options-container {
+        gap: 10px;
+    }
+
+    label {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
     .intelligences {
-        flex-direction: column; /* Afficher en colonne */
-        align-items: center; /* Centrer les éléments horizontalement */
+        flex-direction: column;
+        align-items: center;
     }
 
     .intelligences .intelligence {
-        width: 80%; /* Largeur ajustable pour bien s'afficher */
-        max-width: 250px; /* Empêcher d'être trop large */
+        width: 90%;
+        max-width: 250px;
+    }
+
+    .suggestions {
+        gap: 10px;
+    }
+
+    .suggestion {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 10px;
     }
 }
