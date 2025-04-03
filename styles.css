@@ -179,7 +179,7 @@ button:hover {
 
 /* 📌 Responsive Design - Écrans <= 768px (Tablettes & Mobiles) */
 @media screen and (max-width: 768px) {
-    #quiz-container, #result-container {
+    #quiz-container, #result-container, #intro-container {
         width: 90%;
         max-width: 90%;
         padding: 20px;
@@ -207,7 +207,7 @@ button:hover {
 
 /* 📌 Responsive Design - Écrans <= 460px (Petits smartphones) */
 @media screen and (max-width: 460px) {
-    #quiz-container, #result-container {
+    #quiz-container, #result-container, #intro-container {
         width: 95%;
         padding: 15px;
         margin: 0 auto;
