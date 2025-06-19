@@ -4,42 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test des intelligences multiples</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="intro-container">
-        <h1>Test des intelligences multiples</h1>
-        <p>Ce test évalue les différentes formes d'intelligence, selon la théorie des intelligences multiples. Vous allez répondre à une série de questions, et à la fin, vous découvrirez vos types d'intelligence dominants et des suggestions de métiers qui pourraient correspondre à votre profil.</p>
-        <button id="start-button">Commencer le test</button>
-    </div>
-
-    <div id="quiz-container" style="display: none;">
-        <div id="question-container"></div>
-        <div id="options-container"></div>
-        <button id="next-button">Suivant</button>
-    </div>
-
-    <div id="result-container" style="display: none;">
-        <h2>Résultats :</h2>
-        <small>
-            Vous avez besoin d'un Développeur ? Contactez-moi par mail: 
-            <a href="mailto:patrickekogha@gmail.com" style="color: #008083; text-decoration: underline;">patrickekogha@gmail.com</a>
-        </small>
     
-        <!-- Section des intelligences et scores -->
-        <div class="intelligences">
-            <!-- Les résultats des intelligences vont s'afficher ici -->
+    <div class="glass-container">
+        <div id="intro-container">
+            <h1><i class="fas fa-brain"></i> Test des intelligences multiples</h1>
+            <p>Ce test explore les différentes formes d'intelligence, selon la théorie des intelligences multiples d'Howard Gardner. À travers vos réponses, il identifiera vos 4 intelligences dominantes et celles qui sont moins présentes chez vous. À la fin, vous recevrez des suggestions de métiers en lien avec votre profil.</p>
+            <button id="start-button" class="btn">
+                <i class="fas fa-play"></i> Commencer le test
+            </button>
         </div>
-    
-        <!-- Suggestions de métiers -->
-        <h3>Suggestions de métiers :</h3>
-        <div class="suggestions">
-            <!-- Les suggestions de métiers vont s'afficher ici -->
-        </div>
-    </div>
-    
-    
 
-    <script src="app.js"></script>
+        <div id="quiz-container" class="hidden">
+            <h1><i class="fas fa-brain"></i> Test des intelligences multiples</h1>
+            <div id="question-container"></div>
+            <div id="options-container"></div>
+            <button id="next-button" class="btn">
+                <i class="fas fa-arrow-right"></i> Suivant
+            </button>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <h2><i class="fas fa-chart-bar"></i> Vos Résultats</h2>
+            
+            <div class="contact-info">
+                <i class="fas fa-code"></i>
+                Vous avez besoin d'un Développeur ? Contactez-moi par mail: 
+                <a href="mailto:patrickekogha@gmail.com">patrickekogha@gmail.com</a>
+            </div>
+
+            <div class="section-title">
+                <i class="fas fa-trophy"></i>
+                Vos types d'intelligences les plus dominants
+            </div>
+            <div class="intelligences" id="dominant-intelligences">
+                <!-- Les 4 intelligences dominantes -->
+            </div>
+
+            <div class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Vos autres types d'intelligences
+            </div>
+            <div class="intelligences" id="other-intelligences">
+                <!-- Les 4 autres intelligences -->
+            </div>
+
+            <div class="section-title">
+                <i class="fas fa-briefcase"></i>
+                Suggestions de métiers
+            </div>
+            <div class="suggestions" id="job-suggestions">
+                <!-- Les suggestions de métiers -->
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="download-button" class="btn btn-download">
+                    <i class="fas fa-download"></i> Télécharger mes résultats
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+<script src="app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
