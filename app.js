@@ -118,56 +118,207 @@ document.addEventListener("DOMContentLoaded", function () {
     
     function showResults() {
         // Masquer le quiz
-        document.getElementById("quiz-container").style.display = "none";
+        // document.getElementById("quiz-container").style.display = "none";
+        document.getElementById("quiz-container").classList.add("hidden");
     
         // Trier les intelligences en fonction des scores du plus haut au plus bas
         let sortedScores = Object.entries(scores)
-            .sort((a, b) => b[1] - a[1])  // Trier par ordre décroissant
-            .map(([intelligence, points]) => ({ intelligence, points }));
-    
+            .sort((a, b) => b[1] - a[1])
+            .map(([intelligence, points]) => ({ 
+                intelligence, 
+                points, 
+                percentage: Math.round((points / 24) * 100) 
+            }));
+        
+        // Générer le HTML pour les intelligences dominantes
+        const dominantIntelligences = sortedScores.slice(0, 4);
+        const otherIntelligences = sortedScores.slice(4);
+
         // Générer le HTML des intelligences et scores
-        let resultHTML = '';
-        sortedScores.forEach(item => {
-            resultHTML += `
+        let dominantHTML = '';
+        dominantIntelligences.forEach(item => {
+            dominantHTML += `
                 <div class="intelligence">
                     <h3>${item.intelligence}</h3>
-                    <p>${item.points} points</p>
+                    <div class="score">${item.points}/24</div>
+                    <div class="percentage">(${item.percentage}%)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${item.percentage}%"></div>
+                    </div>
                 </div>
             `;
         });
-        document.querySelector('.intelligences').innerHTML = resultHTML;
+        document.getElementById('dominant-intelligences').innerHTML = dominantHTML;
+
+        // Générer le HTML pour les autres intelligences
+        let otherHTML = '';
+        otherIntelligences.forEach(item => {
+            otherHTML += `
+                <div class="intelligence">
+                    <h3>${item.intelligence}</h3>
+                    <div class="score">${item.points}/24</div>
+                    <div class="percentage">(${item.percentage}%)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${item.percentage}%"></div>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById('other-intelligences').innerHTML = otherHTML;
     
         // Suggestions de métiers étendues
         let jobSuggestions = {
-            "Logico-mathématique": "Ingénieur, Analyste de données, Scientifique, Mathématicien, Statisticien, Actuaire, Développeur logiciel, Chercheur en IA, Physicien, Comptable, Cryptographe...",
-            "Linguistique": "Écrivain, Journaliste, Traducteur, Rédacteur, Scénariste, Professeur de langues, Poète, Avocat, Conférencier, Publicitaire, Spécialiste en communication...",
-            "Spatiale": "Architecte, Designer, Cartographe, Urbaniste, Ingénieur en réalité virtuelle, Photographe, Illustrateur, Designer graphique, Pilote, Artiste en effets spéciaux, Géomètre...",
-            "Musicale": "Musicien, Compositeur, Producteur de musique, Chef d'orchestre, DJ, Ingénieur du son, Parolier, Professeur de musique, Chanteur, Thérapeute par la musique...",
-            "Corporelle-Kinesthésique": "Athlète, Kinésithérapeute, Danseur, Chorégraphe, Ostéopathe, Médecin sportif, Coach sportif, Acteur, Stuntman (cascadeur), Professeur d'éducation physique, Artiste martial...",
-            "Interpersonnelle": "Psychologue, Conseiller, Responsable RH, Médiateur, Travailleur social, Coach de vie, Commercial, Professeur, Dirigeant d’entreprise, Diplômate, Manager d’équipe...",
-            "Intrapersonnelle": "Coach, Philosophe, Auteur, Thérapeute, Moine, Psychanalyste, Écrivain de développement personnel, Méditant professionnel, Prêtre/Religieux, Consultant en bien-être, Stratège...",
-            "Naturaliste": "Biologiste, Écologiste, Agriculteur, Océanographe, Vétérinaire, Zoologiste, Apiculteur, Jardinier paysagiste, Forestier, Responsable d’un parc naturel, Spécialiste en développement durable..."
+            "Logico-mathématique": "Ingénieur, Analyste de données, Scientifique, Mathématicien, Statisticien, Actuaire, Développeur logiciel, Chercheur en IA, Physicien, Comptable, Cryptographe, Analyste cybersécurité, Ingénieur en automatisation, Développeur blockchain, Ingénieur en robotique, Économiste quantitatif, Concepteur d’algorithmes, Analyste financier quantitatif (quants), Chercheur en sciences cognitives, Ingénieur en simulation numérique, Expert en modélisation mathématique...",
+            "Linguistique": "Écrivain, Journaliste, Traducteur, Rédacteur, Scénariste, Professeur de langues, Poète, Avocat, Conférencier, Publicitaire, Spécialiste en communication, UX Writer, Spécialiste en SEO, Orthophoniste, Linguistic Data Annotator, Expert en étymologie, Scénariste jeux vidéo, Responsable éditorial, Dialoguiste, Copywriter web, Spécialiste en voix-off...",
+            "Spatiale": "Architecte, Designer, Cartographe, Urbaniste, Ingénieur en réalité virtuelle, Photographe, Illustrateur, Designer graphique, Pilote, Artiste en effets spéciaux, Géomètre, Game designer, Scénographe, Designer d’interface utilisateur (UI), Ingénieur en imagerie médicale, Artiste 3D, Paysagiste, Monteur vidéo, Designer de réalité augmentée, Spécialiste en effets visuels (VFX), Architecte naval ou aéronautique...",
+            "Musicale": "Musicien, Compositeur, Producteur de musique, Chef d'orchestre, DJ, Ingénieur du son, Parolier, Professeur de musique, Chanteur, Thérapeute par la musique, Sound designer pour jeux vidéo, Réalisateur de clips musicaux, Éthnomusicologue, Professeur d’histoire de la musique, Créateur de jingles, Ingénieur acoustique, Luthier, Thérapeute sonore, Producteur de podcasts musicaux, Designer sonore pour films/VR...",
+            "Corporelle-Kinesthésique": "Athlète, Kinésithérapeute, Danseur, Chorégraphe, Ostéopathe, Médecin sportif, Coach sportif, Acteur, Stuntman (cascadeur), Professeur d'éducation physique, Artiste martial, Ergothérapeute, Coach en posture, Instructeur de yoga, Acrobate, Masseur-kinésithérapeute, Ergonomiste industriel, Physiologiste du sport, Guide de haute montagne, Praticien en shiatsu...",
+            "Interpersonnelle": "Psychologue, Conseiller, Responsable RH, Médiateur, Travailleur social, Coach de vie, Commercial, Professeur, Dirigeant d’entreprise, Diplômate, Manager d’équipe, Formateur professionnel, Animateur socioculturel, Chef de projet collaboratif, Coach agile/Scrum master, Facilitateur d’ateliers, Responsable de communauté, Éducateur spécialisé, Animateur radio/télé, Consultant en relations interculturelles, Ambassadeur/ONG...",
+            "Intrapersonnelle": "Coach, Philosophe, Auteur, Thérapeute, Moine, Psychanalyste, Écrivain de développement personnel, Méditant professionnel, Prêtre/Religieux, Consultant en bien-être, Stratège, Mentor, Coach en intelligence émotionnelle, Journaliste introspectif, Concepteur de programmes de développement personnel, Conseiller en orientation, Philosophe public, Méditant formateur, Écrivain spirituel, Analyste introspectif...",
+            "Naturaliste": "Biologiste, Écologiste, Agriculteur, Océanographe, Vétérinaire, Zoologiste, Apiculteur, Jardinier paysagiste, Forestier, Responsable d’un parc naturel, Spécialiste en développement durable, Géologue, Botaniste, Microbiologiste, Ingénieur en agronomie, Climatologue, Gestionnaire de biodiversité, Expert en permaculture, Technicien en énergies renouvelables, Guide écotouristique..."
         };
-    
-        // Générer le HTML des suggestions de métiers
+
+        // Générer le HTML des suggestions de métiers (pour tous les types d'intelligence)
         let suggestionsHTML = '';
         sortedScores.forEach(item => {
             suggestionsHTML += `
                 <div class="suggestion">
-                    <h4>${item.intelligence}</h4>
+                    <h4><i class="fas fa-star"></i> ${item.intelligence}</h4>
                     <p>${jobSuggestions[item.intelligence]}</p>
                 </div>
             `;
         });
-        document.querySelector('.suggestions').innerHTML = suggestionsHTML;
-    
-        // Afficher les résultats et les suggestions
-        document.getElementById("result-container").style.display = "block";
+        document.getElementById('job-suggestions').innerHTML = suggestionsHTML;
+        
+        // Afficher les résultats
+        document.getElementById("result-container").classList.remove("hidden");
     }
     
     document.getElementById("start-button").addEventListener("click", () => {
-        document.getElementById("intro-container").style.display = "none";
-        document.getElementById("quiz-container").style.display = "block";
+        // document.getElementById("intro-container").style.display = "none";
+        // document.getElementById("quiz-container").style.display = "block";
+        document.getElementById("intro-container").classList.add("hidden");
+        document.getElementById("quiz-container").classList.remove("hidden");
         showQuestion();
     });
+
+    // Bouton de téléchargement (pour l'instant juste un placeholder)
+    document.getElementById("download-button").addEventListener("click", () => {
+        const resultContainer = document.getElementById("result-container");
+
+        // Cloner pour PDF
+        const clonedContainer = resultContainer.cloneNode(true);
+        clonedContainer.style.background = "#ffffff";
+        clonedContainer.style.color = "#222";
+        clonedContainer.style.padding = "30px";
+        clonedContainer.style.fontFamily = "Arial, sans-serif";
+        clonedContainer.style.width = "100%";
+
+        // Nettoyer les styles visuels non PDF-friendly
+        const elements = clonedContainer.querySelectorAll("*");
+        elements.forEach(el => {
+            el.classList.remove("hidden");
+            el.style.boxShadow = "none";
+            el.style.backdropFilter = "none";
+            el.style.border = "none";
+            el.style.background = "transparent";
+            el.style.color = "#222";
+            el.style.pageBreakInside = "avoid";
+        });
+
+        // Appliquer des couleurs vives aux blocs
+        clonedContainer.querySelectorAll('.intelligence').forEach(card => {
+            card.style.background = "#e3f2fd"; // Bleu clair
+            card.style.border = "1px solid #90caf9";
+            card.style.borderLeft = "6px solid #2196f3";
+            card.style.padding = "15px";
+            card.style.borderRadius = "10px";
+            card.style.marginBottom = "15px";
+        });
+
+        clonedContainer.querySelectorAll('.suggestion').forEach(card => {
+            card.style.background = "#f1f8e9"; // Vert clair
+            card.style.border = "1px solid #c5e1a5";
+            card.style.borderLeft = "6px solid #8bc34a";
+            card.style.padding = "15px";
+            card.style.borderRadius = "10px";
+            card.style.marginBottom = "15px";
+        });
+
+        clonedContainer.querySelectorAll('.contact-info').forEach(card => {
+            card.style.background = "#e0f7fa"; // Cyan clair
+            card.style.border = "1px solid #4dd0e1";
+            card.style.color = "#006064";
+            card.style.padding = "15px";
+            card.style.borderRadius = "10px";
+            card.style.marginBottom = "15px";
+            card.style.fontWeight = "bold";
+            card.style.textAlign = "center";
+        });
+
+        // Progress bars
+        clonedContainer.querySelectorAll('.progress-fill').forEach(bar => {
+            bar.style.background = "linear-gradient(to right, #1976d2, #42a5f5)";
+        });
+
+        // Titres de section bien visibles
+        clonedContainer.querySelectorAll('.section-title, .section-title h4').forEach(title => {
+            title.style.color = "#6a1b9a"; // Violet soutenu
+            title.style.fontSize = "20px";
+            title.style.fontWeight = "700";
+            title.style.marginTop = "25px";
+            title.style.marginBottom = "10px";
+            title.style.borderBottom = "2px solid #6a1b9a";
+            title.style.paddingBottom = "5px";
+        });
+
+        // h2 principal
+        const mainTitle = clonedContainer.querySelector("h2");
+        if (mainTitle) {
+            mainTitle.style.color = "#0d47a1"; // Bleu foncé
+            mainTitle.style.fontSize = "26px";
+            mainTitle.style.fontWeight = "bold";
+            mainTitle.style.textAlign = "center";
+            mainTitle.style.marginBottom = "30px";
+        }
+
+        // Lien email
+        const mailLink = clonedContainer.querySelector(".contact-info a");
+        if (mailLink) {
+            mailLink.style.color = "#0277bd";
+            mailLink.style.fontWeight = "bold";
+            mailLink.style.textDecoration = "underline";
+        }
+
+        // Supprimer bouton
+        const btn = clonedContainer.querySelector('#download-button');
+        if (btn) btn.remove();
+
+        // Options PDF
+        const opt = {
+            margin: 0.1,
+            filename: 'resultats_intelligences_multiples.pdf',
+            image: { type: 'jpeg', quality: 0.95 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff",
+                scrollX: 0,
+                scrollY: 0
+            },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+            pagebreak: {
+                mode: ['avoid-all', 'css', 'legacy']
+            }
+        };
+
+        html2pdf().set(opt).from(clonedContainer).save()
+            .then(() => console.log("PDF téléchargé !"))
+            .catch(err => {
+                console.error("Erreur PDF :", err);
+                alert("Erreur lors de la génération du PDF.");
+            });
+    });
+
+
 });
